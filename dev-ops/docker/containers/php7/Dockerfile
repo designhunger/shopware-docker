@@ -1,4 +1,4 @@
-FROM php:7.1-apache
+FROM php:7.0-apache
 
 RUN apt-get update -qq && apt-get install -y -qq apt-utils && mkdir -p /usr/share/man/man1 \
     && apt-get update -qq && apt-get install -y -qq openjdk-8-jre-headless \
@@ -52,8 +52,8 @@ RUN mkdir /tmp/ioncube && \
     curl -SL http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz -o /tmp/ioncube/ioncube_loaders_lin_x86-64.tar.gz && \
     tar xvf /tmp/ioncube/ioncube_loaders_lin_x86-64.tar.gz && \
     cd `php -i | grep extension_dir | cut -d' ' -f 5` && \
-    cp /tmp/ioncube/ioncube/ioncube_loader_lin_7.1.so /usr/local/ioncube/ioncube_loader_lin_7.1.so && \
-    echo zend_extension=/usr/local/ioncube/ioncube_loader_lin_7.1.so > /usr/local/etc/php/conf.d/00-ioncube.ini && \
+    cp /tmp/ioncube/ioncube/ioncube_loader_lin_7.0.so /usr/local/ioncube/ioncube_loader_lin_7.0.so && \
+    echo zend_extension=/usr/local/ioncube/ioncube_loader_lin_7.0.so > /usr/local/etc/php/conf.d/00-ioncube.ini && \
     rm -rf /tmp/ioncube/
 
 RUN pecl install xdebug \
