@@ -13,7 +13,7 @@ services:
       TERM: xterm
       COMPOSER_CACHE_DIR: /var/www/composer-cache-dir
     ports:
-      - "8083:80"
+      - "80:80"
 
   app_mysql:
     build: dev-ops/docker/containers/mysql
