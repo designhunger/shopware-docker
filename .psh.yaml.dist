@@ -14,6 +14,8 @@ const:
   DB_HOST_PROD: "127.0.0.1"
   DB_NAME_PROD: "shopware"
   MYSQLDUMP_PATH_PROD: "/usr/local/mysql5/bin/mysqldump"
+  SW_HOST_PROD: ""
+  SSH_USER: ""
 
 dynamic:
   USERKEY: echo "$(id -u):$(id -g)"
