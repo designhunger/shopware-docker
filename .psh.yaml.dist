@@ -9,6 +9,11 @@ const:
   SW_HOST: "localhost"
   SW-BRANCH: "5.5"
   SW-VERSION: "latest"
+  DB_USER_PROD: "app"
+  DB_PASSWORD_PROD: "app"
+  DB_HOST_PROD: "127.0.0.1"
+  DB_NAME_PROD: "shopware"
+  MYSQLDUMP_PATH_PROD: "/usr/local/mysql5/bin/mysqldump"
 
 dynamic:
   USERKEY: echo "$(id -u):$(id -g)"

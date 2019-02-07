@@ -78,6 +78,10 @@ Legt eine Datenbank im Docker Container an:
 
     $ ./psh.phar swcoach:create-database
 
+Erstellt einen SQL-Dump auf dem Live-Server und speichert diesen lokal unter /dumps/dump.sql:
+
+    $ ./psh.phar swcoach:pull-dump
+
 Importiert einen SQL-Dump von /dumps/dump.sql, ändert die Shopware-Domain auf die verwendete Variable ab, deaktiviert SSL und leert den Cache:
 
     $ ./psh.phar swcoach:import-dump
