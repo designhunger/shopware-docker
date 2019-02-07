@@ -6,8 +6,8 @@ const:
   DB_PASSWORD: "app"
   DB_HOST: "mysql"
   DB_NAME: "shopware"
-  SW_HOST: "localhost:8083"
-  SW-BRANCH: "5.4"
+  SW_HOST: "localhost"
+  SW-BRANCH: "5.5"
   SW-VERSION: "latest"
 
 dynamic:
@@ -22,3 +22,7 @@ environments:
   docker:
     paths:
       - "dev-ops/docker/actions"
+  swcoach:
+    paths:
+      - "dev-ops/swcoach/actions"
+

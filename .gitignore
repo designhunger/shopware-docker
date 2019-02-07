@@ -13,3 +13,5 @@
 !/plugins/.gitkeep
 /plugins_old/
 !/plugins_old/.gitkeep
+/dumps/
+!/dumps/.gitkeep

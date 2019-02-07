@@ -1,0 +1,32 @@
+before_script:
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+  - eval $(ssh-agent -s)
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+
+deploy_staging:
+  stage: deploy
+  image: shopwarecoach/shopware-php:php7.2
+  script:
+    - echo "$SSH_STAGING_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - ssh -p22 $SSH_USER@$SSH_HOST "rm -rf $USER_HOME/_tmp"
+    - ssh -p22 $SSH_USER@$SSH_HOST "mkdir -p $USER_HOME/_tmp && mkdir -p $USER_HOME/public && mkdir -p $USER_HOME/shared/files && mkdir -p $USER_HOME/shared/media && mkdir -p $USER_HOME/shared/var/log && mkdir -p $USER_HOME/shared/web/sitemap"
+    - rsync -rav -q -e ssh --exclude='.git/' --exclude='.gitlab-ci.yml' --delete-excluded ./ $SSH_USER@$SSH_HOST:$USER_HOME/_tmp
+    - ssh -p22 $SSH_USER@$SSH_HOST "rm -rf $USER_HOME/_tmp/files"
+    - ssh -p22 $SSH_USER@$SSH_HOST "rm -rf $USER_HOME/_tmp/media"
+    - ssh -p22 $SSH_USER@$SSH_HOST "rm -rf $USER_HOME/_tmp/var/log"
+    - ssh -p22 $SSH_USER@$SSH_HOST "rm -rf $USER_HOME/_tmp/web/sitemap"
+    - ssh -p22 $SSH_USER@$SSH_HOST "ln -s $USER_HOME/shared/files $USER_HOME/_tmp/files"
+    - ssh -p22 $SSH_USER@$SSH_HOST "ln -s $USER_HOME/shared/media $USER_HOME/_tmp/media"
+    - ssh -p22 $SSH_USER@$SSH_HOST "ln -s $USER_HOME/shared/var/log $USER_HOME/_tmp/var/log"
+    - ssh -p22 $SSH_USER@$SSH_HOST "ln -s $USER_HOME/shared/web/sitemap $USER_HOME/_tmp/web/sitemap"
+    - ssh -p22 $SSH_USER@$SSH_HOST "ln -s $USER_HOME/shared/config.php $USER_HOME/_tmp/config.php"
+    - ssh -p22 $SSH_USER@$SSH_HOST "test -d $USER_HOME/_tmp/_sql/migrations && $USER_HOME/_tmp/bin/console sw:migrations:migrate || echo 'no migrations'"
+    - ssh -p22 $SSH_USER@$SSH_HOST "test -e $USER_HOME/_tmp/_sql/snippets.sql && $USER_HOME/_tmp/bin/console dbal:import $USER_HOME/_tmp/_sql/snippets.sql || echo 'no snippets'"
+    - ssh -p22 $SSH_USER@$SSH_HOST "test -d $USER_HOME/_tmp/_sql && rm -rf $USER_HOME/_tmp/_sql || echo 'no update folder'"
+    - ssh -p22 $SSH_USER@$SSH_HOST "$USER_HOME/_tmp/bin/console sw:plugin:update --batch=all"
+    - ssh -p22 $SSH_USER@$SSH_HOST "$USER_HOME/_tmp/bin/console sw:theme:cache:generate"
+    - ssh -p22 $SSH_USER@$SSH_HOST "mv $USER_HOME/public $USER_HOME/_old && mv $USER_HOME/_tmp $USER_HOME/public"
+    - ssh -p22 $SSH_USER@$SSH_HOST "rm -rf $USER_HOME/_old"
+    - ssh -p22 $SSH_USER@$SSH_HOST "$USER_HOME/public/bin/console sw:warm:http:cache"
