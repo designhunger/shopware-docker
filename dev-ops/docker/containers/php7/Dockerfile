@@ -40,7 +40,7 @@ RUN docker-php-ext-install iconv mbstring opcache \
     && docker-php-ext-install intl \
     && docker-php-ext-install pdo \
     && docker-php-ext-install pdo_mysql \
-	&& docker-php-ext-install mysqli
+    && docker-php-ext-install mysqli
 
 RUN pear config-set http_proxy __DOCKER_HTTP_PROXY__
 
@@ -66,6 +66,8 @@ RUN pecl install redis \
 RUN npm install -g grunt-cli bower grunt jasmine
 
 ADD server-apache2-vhosts.conf /etc/apache2/sites-enabled/000-default.conf
+ADD server-apache2-run-as.conf /etc/apache2/conf-available
+RUN ln -s /etc/apache2/conf-available/server-apache2-run-as.conf /etc/apache2/conf-enabled
 
 ADD php-config.ini /usr/local/etc/php/conf.d/php-config.ini
 ADD timezone-berlin.ini /usr/local/etc/php/conf.d/timezone.ini
@@ -73,9 +75,19 @@ ADD xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN a2enmod rewrite
 
+COPY createuser.sh /tmp/createuser.sh
+RUN chmod +rwx /tmp/createuser.sh
+RUN /tmp/createuser.sh
+
 RUN echo "alias ll='ls -ahl'" >> /etc/bash.bashrc
 
 WORKDIR /var/www/shopware
+
+COPY wait.sh /tmp/wait.sh
+RUN chmod +x /tmp/wait.sh
+
+COPY id_rsa /home/app-shell/.ssh
+COPY id_rsa.pub /home/app-shell/.ssh
 
 COPY run-container.sh /run-container.sh
 RUN chmod +x /run-container.sh
