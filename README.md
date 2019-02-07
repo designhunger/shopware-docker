@@ -68,6 +68,18 @@ You can then access your storefront at:
 
 - Front-end: [http://localhost:8083/](http://localhost:8083/)
 
+#### Shopwarecoach
+
+./psh.phar config-create: Erstelle eine config.php Datei im shopware Ordner, falls noch nicht vorhanden und überschreibt die DB-Einstellungen mit denen von Docker
+
+./psh.phar swcoach:create-database: Legt eine Datenbank im Docker Container an
+
+./psh.phar swcoach:import-dump: Importiert einen SQL-Dump von /dumps/dump.sql, ändert die Shopware-Domain auf die verwendete Variable ab, deaktiviert SSL und leert den Cache
+
+./psh.phar swcoach:update-hosts: Schreibt die neue Domain in die /etc/hosts
+
+./psh.phar swcoach:gitify: Prüft, ob eine .gitignore und eine .gitlab-ci.yml Datei im /shopware Ordner vorhanden ist und erstellt diese andernfalls mit sinnvollen default Werten
+
 ## Troubleshooting 
 
 If the elasticsearch or redis container didn't start make sure that the directory dev-ops/docker/_volumes/app-esdata|app-redisdata has chmod 777.
