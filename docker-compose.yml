@@ -5,15 +5,14 @@ services:
     build: dev-ops/docker/containers/php7
     volumes:
       - ~/.composer/cache:/var/www/composer-cache-dir:Z
-      - .:/project:Z
-      - .:/var/www/shopware:Z
+      - .:/var/www/shopware:delegated
     links:
       - app_mysql:mysql
     environment:
       TERM: xterm
       COMPOSER_CACHE_DIR: /var/www/composer-cache-dir
     ports:
-      - "8083:80"
+      - "80:80"
 
   app_mysql:
     build: dev-ops/docker/containers/mysql
@@ -30,20 +29,3 @@ services:
       - app_mysql:db
     ports:
       - "8080:80"
-
-  app_es:
-    build: dev-ops/docker/containers/elastic-search
-    volumes:
-      - ./dev-ops/docker/containers/elastic-search/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:Z
-      - ./dev-ops/docker/_volumes/app-es-data:/usr/share/elasticsearch/data:Z
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    environment:
-      TERM: xterm
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-
-  app_redis:
-    build: dev-ops/docker/containers/redis
-    volumes:
-      - ./dev-ops/docker/_volumes/app-redisdata:/data:Z
