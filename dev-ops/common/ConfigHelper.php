@@ -3,6 +3,23 @@
 class ConfigHelper
 {
     const CONFIG_PATH = __DIR__ . '/../../shopware/config.php';
+	
+    public static function createConfig()
+    {
+        if (!file_exists(self::CONFIG_PATH)) {
+			echo "create config.php file";
+        }		
+
+        $config['db'] = [
+            'host' => 'mysql',
+            'port' => '3306',
+            'username' => 'app',
+            'password' => 'app',
+            'dbname' => 'shopware',
+        ];
+
+        self::saveConfig($config);
+    }	
 
     public static function enableElasticSearch()
     {
