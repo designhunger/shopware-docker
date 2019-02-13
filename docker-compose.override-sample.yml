@@ -1,0 +1,19 @@
+version: '2'
+services:
+
+  app_phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    links:
+      - app_mysql:db
+    ports:
+      - "8080:80"
+
+  app_redis:
+    extends:
+      file: docker-compose.base.yml
+      service: app_redis
+
+  app_es:
+        extends:
+          file: docker-compose.base.yml
+          service: app_es

@@ -23,9 +23,3 @@ services:
       MYSQL_USER: app
       MYSQL_PASSWORD: app
 
-  app_phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    links:
-      - app_mysql:db
-    ports:
-      - "8080:80"
