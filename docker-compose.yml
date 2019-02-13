@@ -18,8 +18,9 @@ services:
     build: dev-ops/docker/containers/mysql
     volumes:
       - ./dev-ops/docker/_volumes/app-mysql-data:/var/lib/mysql:Z
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: app
       MYSQL_PASSWORD: app
-
