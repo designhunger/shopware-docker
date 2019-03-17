@@ -11,6 +11,9 @@ services:
     environment:
       TERM: xterm
       COMPOSER_CACHE_DIR: /var/www/composer-cache-dir
+      XDEBUG_CONFIG: idekey=PHPSTORM
+      PHP_IDE_CONFIG: serverName=localhost
+
     ports:
       - "80:80"
 
