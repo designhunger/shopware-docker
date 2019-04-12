@@ -40,7 +40,8 @@ RUN docker-php-ext-install iconv mbstring opcache \
     && docker-php-ext-install intl \
     && docker-php-ext-install pdo \
     && docker-php-ext-install pdo_mysql \
-    && docker-php-ext-install mysqli
+    && docker-php-ext-install mysqli \
+    && docker-php-ext-install soap
 
 RUN pear config-set http_proxy __DOCKER_HTTP_PROXY__
 
