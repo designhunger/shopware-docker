@@ -6,7 +6,7 @@ if [ ! -d shopware ]
 then
 if [ ${GITLAB} != X ]
 then
-git clone ${SW_HOST} shopware && sleep 15s
+git clone ${GITLAB} shopware && sleep 15s
 else
 mkdir shopware && sleep 1s
 fi
