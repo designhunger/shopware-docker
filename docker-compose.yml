@@ -31,3 +31,20 @@ services:
       MYSQL_PASSWORD: app
       MYSQL_DATABASE: shopware
       TZ: Europe/Berlin
+      
+  app_es:
+    image: shopwarecoach/elastic-search
+    volumes:
+      - ./dev-ops/docker/containers/elastic-search/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:Z
+      - ./dev-ops/docker/_volumes/app-es-data:/usr/share/elasticsearch/data:Z
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      TERM: xterm
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+
+  app_redis:
+    image: shopwarecoach/redis
+    volumes:
+      - ./dev-ops/docker/_volumes/app-redisdata:/data:Z
